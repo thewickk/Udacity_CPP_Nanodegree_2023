@@ -43,9 +43,20 @@ int main()
     std::string line {"0,1,0,0,0,0,"};
     std::vector<int> temp;
 
-    
+    std::istringstream boardStream(line);
 
-    
-    ReadBoardFile("files/1.board");
+    char c;
+    int n;
+
+    while (boardStream >> n >> c)
+    {
+        temp.push_back(n);
+    }
+
+    for (auto value : temp)
+    {
+        std::cout << value << " ";
+    }
+    std::cout << "\n";
     return 0;
 }
