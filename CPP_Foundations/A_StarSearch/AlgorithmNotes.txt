@@ -1,0 +1,34 @@
+Summary
+
+f-value = g + h(x,y)
+    g = the number of steps so far...
+    h(x,y) = the heuristic value of the coordinate x,y
+        h(x,y) is always less than or equal to distance to goal from x,y
+
+The code for the A* search algorithm has been broken down into the following functions:
+
+    - CellSort() - sorts the open list according to the sum of h + g
+    - ExpandNeighbors() - loops through the current node's neighbors and calls appropriate functions to add neighbors to the open list
+    - CheckValidCell() - ensures that the potential neighbor coordinates are on the grid and that the cell is open
+    - Heuristic() - computes the distance to the goal
+    - AddToOpen() - adds the node to the open list and marks the grid cell as closed
+
+
+Below are the steps from the while loop in the A* pseudocode you saw previously:
+
+    0. while the list of open nodes is nonempty:
+
+        1. Sort the open list by f-value = CellSort()
+
+    
+    2. Pop the optimal cell (called the current cell).
+    
+    3. Mark the cell's coordinates in the grid as part of the path.
+    
+    4. if the current cell is the goal cell: = Search()
+        return the grid.
+    
+    5. else, expand the search to the current node's neighbors. This includes the following steps: = ExpandNeighbors()
+        - Check each neighbor cell in the grid to ensure that the cell is empty: it hasn't been closed and is not an obstacle.
+            - If the cell is empty, compute the cost (g value) and the heuristic, and add to the list of open nodes.
+            - Mark the cell as closed.
