@@ -5,8 +5,12 @@
 #include <fstream>
 #include <algorithm>
 
+
 // Add enum State
-enum class State {kempty, kObstacle, kClosed, kPath};
+enum class State {kEmpty, kObstacle, kClosed, kPath};
+
+// Directional deltas
+const int delta[4][2]{{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
 
 // Write ParseLine function using string stream
 std::vector<State> ParseLine(std::string board_line)
@@ -21,7 +25,7 @@ std::vector<State> ParseLine(std::string board_line)
     {
         if (n == 0)
         {
-            line.push_back(State::kempty);
+            line.push_back(State::kEmpty);
         }
         else
         {
@@ -55,12 +59,7 @@ std::vector<std::vector<State>> ReadBoardFile(std::string board_file)
 }
 
 
-// Write the comparison function:
-/*
-Write a function bool Compare that accepts two nodes of type vector<int> as arguments. 
-It should return a boolean true if the f-value of the first argument is greater than the f-value of the second, 
-and it should return false otherwise. Recall that the f-value is the sum of the cost and heuristic: f = g + h.
-*/
+// Write the Compare function:
 bool Compare(const std::vector<int> node1, const std::vector<int> node2)
 {
     int f1 = node1[2] + node1[3];
@@ -80,6 +79,17 @@ int Heuristic(int x1, int y1, int x2, int y2)
     return abs(x2 -x1) + abs(y2 - y1);
 }
 
+// Write CheckValidCell function
+bool CheckValidCell(int x, int y, std::vector<std::vector<State>> &grid)
+{
+    bool on_grid_x = (x >= 0 && x < grid.size());
+    bool on_grid_y = (y >= 0 && y < grid[0].size());
+
+    if (on_grid_x && on_grid_y)
+        return grid[x][y] == State::kEmpty;
+    return false;
+}
+
 // Write AddToOpen function
 void AddToOpen(int x, int y, int g, int h, std::vector<std::vector<int>> &openNodes, std::vector<std::vector<State>> &grid)
 {
@@ -88,6 +98,32 @@ void AddToOpen(int x, int y, int g, int h, std::vector<std::vector<int>> &openNo
     grid[x][y] = State::kClosed;
 
 }
+
+// Expand current node's neighbors and add them to the open list
+void ExpandNeighbors(std::vector<int> currentNode, int goal[2], std::vector<std::vector<int>> &open, std::vector<std::vector<State>> &grid)
+{
+    // TODO: Get current node's data.
+    int node_x = currentNode[0];
+    int node_y = currentNode[1];
+    int node_g = currentNode[2];
+
+    // TODO: Loop through current node's potential neighbors.
+    for (int i = 0; i < 4; i++)
+    {
+        // TODO: Check that the potential neighbor's x2 and y2 values are on the grid and not closed.
+        int neighbor_x = node_x + delta[i][0];
+        int neighbor_y = node_y + delta[i][1];
+
+        if (CheckValidCell(neighbor_x, neighbor_y, grid))
+        {
+            // TODO: Increment g value, compute h value, and add neighbor to open list
+            int new_g = currentNode[2] + 1;
+            int new_h = Heuristic(neighbor_x, neighbor_y, goal[0] , goal[1]);
+            AddToOpen(neighbor_x, neighbor_y, new_g, new_h, open, grid);
+        }            
+    }
+}
+
 
 // Write Search function
 std::vector<std::vector<State>> Search(std::vector<std::vector<State>> grid, int init[2], int goal[2]) // init [x1, y1], goal [x2, y2]
@@ -125,10 +161,9 @@ std::vector<std::vector<State>> Search(std::vector<std::vector<State>> grid, int
         // TODO: Check if you've reached the goal. If so, return grid.
         if (x == goal[0] && y == goal[1]) return grid;
         
-        // If we're not done, expand search to current node's neighbors. This step will be completed in a later quiz.
-        // ExpandNeighbors
-  
-    } // TODO: End while loop
+        // If we're not done, expand search to current node's neighbors.
+        ExpandNeighbors(current, goal, open, grid);
+    }
   
     // We've run out of new nodes to explore and haven't found a path.
     std::cout << "No path found!" << std::endl;
@@ -142,9 +177,9 @@ std::string CellString(State cellState)
 {
     switch(cellState)
     {
-        case State::kObstacle : return "⛰️  ";
-        break;
-        default : return "0  ";
+        case State::kObstacle: return "⛰️   ";
+        case State::kPath: return "🚗   ";
+        default: return "0   "; 
     }
 }
 
@@ -161,15 +196,11 @@ void PrintBoard(std::vector<std::vector<State>> board_grid)
     }
 }
 
-int main()
-{
-    int start[2] {0, 0};
-    int goal[2] {4, 5};
 
-    auto test_board = ReadBoardFile("files/1.board");
-    auto solution = Search(test_board, start, goal);
-    PrintBoard(test_board);
-
-
-    return 0;
+int main() {
+  int init[2]{0, 0};
+  int goal[2]{4, 5};
+  auto board = ReadBoardFile("files/1.board");
+  auto solution = Search(board, init, goal);
+  PrintBoard(solution);
 }

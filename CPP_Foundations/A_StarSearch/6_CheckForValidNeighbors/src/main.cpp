@@ -6,7 +6,7 @@
 #include <algorithm>
 
 // Add enum State
-enum class State {kempty, kObstacle, kClosed, kPath};
+enum class State {kEmpty, kObstacle, kClosed, kPath};
 
 // Write ParseLine function using string stream
 std::vector<State> ParseLine(std::string board_line)
@@ -79,6 +79,22 @@ int Heuristic(int x1, int y1, int x2, int y2)
 {
     return abs(x2 -x1) + abs(y2 - y1);
 }
+
+// TODO: Write CheckValidCell here. Check that the 
+// cell is on the grid and not an obstacle (i.e. equals kEmpty).
+bool CheckValidCell(int x, int y, std::vector<std::vector<State>> &grid)
+{
+    bool on_grid_x = (x >= 0 && x < grid.size());
+    bool on_grid_y = (y >= 0 && y < grid[0].size());
+
+    if (on_grid_x && on_grid_y)
+        return grid[x][y] == State::kEmpty;
+    return false;
+}
+
+/** 
+ * Add a node to the open list and mark it as open. 
+ */
 
 // Write AddToOpen function
 void AddToOpen(int x, int y, int g, int h, std::vector<std::vector<int>> &openNodes, std::vector<std::vector<State>> &grid)
