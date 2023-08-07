@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/main.elf.dir/src/main.cpp.o CMakeFiles/main.elf.dir/src/increment_and_sum.cpp.o CMakeFiles/main.elf.dir/src/vect_add_one.cpp.o -o main.elf 
