@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -Wall -g CMakeFiles/main.elf.dir/src/main.cpp.o -o main.elf 

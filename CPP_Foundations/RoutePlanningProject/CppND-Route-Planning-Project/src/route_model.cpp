@@ -72,6 +72,7 @@ RouteModel::Node &RouteModel::FindClosestNode(float x, float y) {
             }
         }
     }
-
+    // TODO: Remove This!
+    //std::cout << "Closest IDX: " << closest_idx << std::endl;
     return SNodes()[closest_idx];
 }

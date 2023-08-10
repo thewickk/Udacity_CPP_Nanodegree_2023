@@ -1,0 +1,5 @@
+In order to be able to debug w/ GDB... 
+    - If you already built the project, delete the build dir
+    - make the build dir again... mkdir Debug && cd Debug
+    - build Debug w/ CMake:
+        cmake -DCMAKE_BUILD_TYPE=Debug -S ..

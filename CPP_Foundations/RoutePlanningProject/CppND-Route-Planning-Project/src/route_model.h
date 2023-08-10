@@ -7,9 +7,12 @@
 #include "model.h"
 #include <iostream>
 
+// Class RouteModel inherits from Model
 class RouteModel : public Model {
 
   public:
+    // sub-class of RouteModel that inherits from Model::Node - double x, double y
+      // sub-class adds it's own attributes and methods to help complete the A* Search algorithm
     class Node : public Model::Node {
       public:
         Node * parent = nullptr;
@@ -23,7 +26,9 @@ class RouteModel : public Model {
             return std::sqrt(std::pow((x - other.x), 2) + std::pow((y - other.y), 2));
         }
 
+        // Node default constrcutor
         Node(){}
+        // Node constructor w/ args and initializer list
         Node(int idx, RouteModel * search_model, Model::Node node) : Model::Node(node), parent_model(search_model), index(idx) {}
 
       private:
@@ -32,7 +37,9 @@ class RouteModel : public Model {
         RouteModel * parent_model = nullptr;
     };
 
+    // RouteModel constructor
     RouteModel(const std::vector<std::byte> &xml);
+    
     Node &FindClosestNode(float x, float y);
     auto &SNodes() { return m_Nodes; }
     std::vector<Node> path;

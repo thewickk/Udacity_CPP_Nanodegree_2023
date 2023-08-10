@@ -46,8 +46,8 @@ public:
     
     Model( const std::vector<std::byte> &xml );
     
+    // Getters
     auto MetricScale() const noexcept { return m_MetricScale; }    
-    
     auto &Nodes() const noexcept { return m_Nodes; }
     auto &Ways() const noexcept { return m_Ways; }
     auto &Roads() const noexcept { return m_Roads; }
