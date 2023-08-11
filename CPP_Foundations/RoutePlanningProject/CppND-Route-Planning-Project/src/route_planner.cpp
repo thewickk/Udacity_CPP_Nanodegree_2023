@@ -23,8 +23,6 @@ RoutePlanner::RoutePlanner(RouteModel &model, float start_x, float start_y, floa
 float RoutePlanner::CalculateHValue(RouteModel::Node const *node) {
 
     float h_value = node->distance(*end_node);
-    //std::cout << "h_value: " << h_value << std::endl;
-
 }
 
 
@@ -57,7 +55,24 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
 // - Return the pointer.
 
 RouteModel::Node *RoutePlanner::NextNode() {
+    
+    std::cout << "Pre sort: " << std::endl;
+    for (auto const &node: open_list)
+    {
+        std::cout << node->g_value << std::endl;
+    }
+    std::sort(open_list.begin(), open_list.end(), [](RouteModel::Node *a, RouteModel::Node *b) { return (a->g_value + a->h_value) > (b->g_value + b->h_value); });
 
+    std::cout << "Post sort: " << std::endl;
+    for (auto const &node: open_list)
+    {
+        std::cout << node->g_value << std::endl;
+    }
+
+    RouteModel::Node *lowestSum = open_list.back();
+    open_list.pop_back();
+
+    return lowestSum;
 }
 
 
@@ -75,8 +90,15 @@ std::vector<RouteModel::Node> RoutePlanner::ConstructFinalPath(RouteModel::Node 
     std::vector<RouteModel::Node> path_found;
 
     // TODO: Implement your solution here.
-
+    while (current_node != start_node)
+    {
+        distance += current_node->distance(*current_node->parent);
+        path_found.push_back(*current_node);
+        current_node = current_node->parent;
+    }
+    path_found.push_back(*start_node);
     distance *= m_Model.MetricScale(); // Multiply the distance by the scale of the map to get meters.
+    std::reverse(path_found.begin(), path_found.end());
     return path_found;
 
 }
@@ -90,7 +112,15 @@ std::vector<RouteModel::Node> RoutePlanner::ConstructFinalPath(RouteModel::Node 
 // - Store the final path in the m_Model.path attribute before the method exits. This path will then be displayed on the map tile.
 
 void RoutePlanner::AStarSearch() {
+    
+    // TODO: uncomment (original code)
+    //RouteModel::Node *current_node = nullptr;
+    
+    // TODO: Remove (test code)
     RouteModel::Node *current_node = nullptr;
+
+    AddNeighbors(current_node);
+    // NextNode();
 
     // TODO: Implement your solution here.
 
