@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/main.elf.dir/src/main.cpp.o CMakeFiles/main.elf.dir/src/car.cpp.o -o main.elf 

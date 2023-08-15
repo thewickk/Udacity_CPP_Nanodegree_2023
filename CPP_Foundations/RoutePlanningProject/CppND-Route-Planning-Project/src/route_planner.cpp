@@ -72,24 +72,10 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
 
 RouteModel::Node *RoutePlanner::NextNode() {
     
-    // std::cout << "Pre sort: " << std::endl;
-    // for (auto const &node: open_list)
-    // {
-    //     std::cout << node->g_value << std::endl;
-    // }
-
     std::sort(open_list.begin(), open_list.end(), [](RouteModel::Node *a, RouteModel::Node *b) { return (a->g_value + a->h_value) > (b->g_value + b->h_value); });
-
-    // std::cout << "Post sort: " << std::endl;
-    // for (auto const &node: open_list)
-    // {
-    //     std::cout << node->g_value << std::endl;
-    // }
 
     RouteModel::Node *lowestSum = open_list.back();
     open_list.pop_back();
-
-    //std::cout << "Open List size: " << open_list.size() << std::endl;
 
     return lowestSum;
 }
