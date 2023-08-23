@@ -1,3 +1,0 @@
-/home/clewis/Udacity_CPP_Nanodegree_2023/CPP_Foundations/RoutePlanningProject/TestPrograms/GetUserInputTest/Debug/CMakeFiles/main.elf.dir
-/home/clewis/Udacity_CPP_Nanodegree_2023/CPP_Foundations/RoutePlanningProject/TestPrograms/GetUserInputTest/Debug/CMakeFiles/edit_cache.dir
-/home/clewis/Udacity_CPP_Nanodegree_2023/CPP_Foundations/RoutePlanningProject/TestPrograms/GetUserInputTest/Debug/CMakeFiles/rebuild_cache.dir
