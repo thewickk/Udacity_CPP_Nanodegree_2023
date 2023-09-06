@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <string>
 #include <vector>
+#include <filesystem>
 
 #include "linux_parser.h"
 
@@ -48,23 +49,22 @@ string LinuxParser::Kernel() {
 
 // BONUS: Update this to use std::filesystem
 vector<int> LinuxParser::Pids() {
+
   vector<int> pids;
-  DIR* directory = opendir(kProcDirectory.c_str());
-  struct dirent* file;
-  while ((file = readdir(directory)) != nullptr) {
-    // Is this a directory?
-    if (file->d_type == DT_DIR) {
-      // Is every character of the name a digit?
-      string filename(file->d_name);
-      if (std::all_of(filename.begin(), filename.end(), isdigit)) {
-        int pid = stoi(filename);
-        pids.push_back(pid);
+  const std::filesystem::path pidPath{"/proc/"};
+
+  for (const auto& dir_entry : std::filesystem::directory_iterator{pidPath})
+  {
+      std::string filename(dir_entry.path().filename());
+      if (std::all_of(filename.cbegin(), filename.cend(), isdigit)) {
+          int pid = stoi(filename);
+          pids.push_back(pid);
       }
-    }
   }
-  closedir(directory);
+
   return pids;
 }
+
 
 // TODO: Read and return the system memory utilization
 float LinuxParser::MemoryUtilization() { return 0.0; }
