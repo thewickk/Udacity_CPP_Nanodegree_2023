@@ -51,7 +51,7 @@ string LinuxParser::Kernel() {
 vector<int> LinuxParser::Pids() {
 
   vector<int> pids;
-  const std::filesystem::path pidPath{"/proc/"};
+  const std::filesystem::path pidPath{kProcDirectory};
 
   for (const auto& dir_entry : std::filesystem::directory_iterator{pidPath})
   {
@@ -73,7 +73,7 @@ float LinuxParser::MemoryUtilization(){
   std::string key;
   float value;
   std::string kB;
-  std::ifstream filestream("/proc/meminfo");
+  std::ifstream filestream(kProcDirectory + kMeminfoFilename);
   if (filestream.is_open())
   {
       while (std::getline(filestream, line))
@@ -120,10 +120,29 @@ long LinuxParser::IdleJiffies() { return 0; }
 vector<string> LinuxParser::CpuUtilization() { return {}; }
 
 // TODO: Read and return the total number of processes
-int LinuxParser::TotalProcesses() { return 0; }
+int LinuxParser::TotalProcesses() { 
+  std::string line;
+  std::string key;
+  int processes;
+  std::ifstream filestream(kProcDirectory + kStatFilename);
+  if (filestream.is_open())
+  {
+      while (std::getline(filestream, line))
+      {
+          std::istringstream linestream(line);
+          while (linestream >> key >> processes)
+          {
+              if (key == "processes") return processes;
+          }
+      }
+  }
+  return -1;
+  }
 
 // TODO: Read and return the number of running processes
-int LinuxParser::RunningProcesses() { return 0; }
+int LinuxParser::RunningProcesses() { 
+  return 0;
+}
 
 // TODO: Read and return the command associated with a process
 // REMOVE: [[maybe_unused]] once you define the function
