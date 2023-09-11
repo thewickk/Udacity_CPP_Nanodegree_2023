@@ -30,25 +30,25 @@ std::string NCursesDisplay::ProgressBar(float percent) {
 
 void NCursesDisplay::DisplaySystem(System& system, WINDOW* window) {
   int row{0};
-  mvwprintw(window, ++row, 2, ("OS: " + system.OperatingSystem()).c_str());
-  mvwprintw(window, ++row, 2, ("Kernel: " + system.Kernel()).c_str());
+  mvwprintw(window, ++row, 2, ("OS: " + system.GetOperatingSystem()).c_str());
+  mvwprintw(window, ++row, 2, ("Kernel: " + system.GetKernel()).c_str());
   mvwprintw(window, ++row, 2, "CPU: ");
   wattron(window, COLOR_PAIR(1));
   mvwprintw(window, row, 10, "");
-  wprintw(window, ProgressBar(system.Cpu().Utilization()).c_str());
+  wprintw(window, ProgressBar(system.GetCpu().Utilization()).c_str());
   wattroff(window, COLOR_PAIR(1));
   mvwprintw(window, ++row, 2, "Memory: ");
   wattron(window, COLOR_PAIR(1));
   mvwprintw(window, row, 10, "");
-  wprintw(window, ProgressBar(system.MemoryUtilization()).c_str());
+  wprintw(window, ProgressBar(system.GetMemoryUtilization()).c_str());
   wattroff(window, COLOR_PAIR(1));
   mvwprintw(window, ++row, 2,
-            ("Total Processes: " + to_string(system.TotalProcesses())).c_str());
+            ("Total Processes: " + to_string(system.GetTotalProcesses())).c_str());
   mvwprintw(
       window, ++row, 2,
-      ("Running Processes: " + to_string(system.RunningProcesses())).c_str());
+      ("Running Processes: " + to_string(system.GetRunningProcesses())).c_str());
   mvwprintw(window, ++row, 2,
-            ("Up Time: " + Format::ElapsedTime(system.UpTime())).c_str());
+            ("Up Time: " + Format::ElapsedTime(system.GetSystemUpTime())).c_str());
   wrefresh(window);
 }
 
@@ -100,7 +100,7 @@ void NCursesDisplay::Display(System& system, int n) {
     box(system_window, 0, 0);
     box(process_window, 0, 0);
     DisplaySystem(system, system_window);
-    DisplayProcesses(system.Processes(), process_window, n);
+    DisplayProcesses(system.GetProcesses(), process_window, n);
     wrefresh(system_window);
     wrefresh(process_window);
     refresh();
