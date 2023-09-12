@@ -35,7 +35,7 @@ std::string Process::User() { return LinuxParser::User(this->pid_); }
 // Return the age of this process (in seconds)
 long int Process::UpTime() { return LinuxParser::UpTime(this->pid_); }
 
-// TODO: Overload the "less than" comparison operator for Process objects
+// Overload the "less than" comparison operator for Process objects
 bool Process::operator<(Process const& other) const 
 { 
   return other.cpu_utilization_ < this->cpu_utilization_;
