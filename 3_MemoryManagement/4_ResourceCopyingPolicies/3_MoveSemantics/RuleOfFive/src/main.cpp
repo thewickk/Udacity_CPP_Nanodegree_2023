@@ -73,12 +73,20 @@ public:
 
         return *this;
     }
+
 };
+
+void useObject(MyMovableClass obj)
+{
+    std::cout << "using object " << &obj << std::endl;
+}
 
 int main()
 {
-    MyMovableClass obj1(10);        // obj1 created with class constructor
-    MyMovableClass obj2(obj1);      // obj2 created using copy constructor
-    obj2 = obj1;                    // obj2 modified to copy of obj1 using copy assignment operator
+    MyMovableClass obj1(100);                    // obj1 created with class constructor
+    useObject(obj1);
+    //obj1 = MyMovableClass(200);                 // move assignment operator
+    MyMovableClass obj2 = MyMovableClass(300);  // move constructor
+    useObject(std::move(obj2));
     return 0;
 }
