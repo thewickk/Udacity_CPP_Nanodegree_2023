@@ -47,6 +47,32 @@ public:
         return *this;
     }
 
+    // move constructor
+    MyMovableClass(MyMovableClass &&source)
+    {
+        std::cout << "MOVING (c'tor) instance " << &source << " to instance " << this << std::endl;
+        _data = source._data;
+        _size = source._size;
+        source._data = nullptr;
+        source._size = 0;
+    }
+
+    // move assignment operator
+    MyMovableClass &operator=(MyMovableClass &&source)
+    {
+        std::cout << "MOVING (assign) instance " << &source << " to instance " << this << std::endl;
+        if (this == &source) return *this;
+
+        delete[] _data;
+
+        _data = source._data;
+        _size = source._size;
+
+        source._data = nullptr;
+        source._size = 0;
+
+        return *this;
+    }
 };
 
 int main()
