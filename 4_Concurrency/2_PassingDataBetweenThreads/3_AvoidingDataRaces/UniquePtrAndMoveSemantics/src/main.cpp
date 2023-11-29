@@ -25,42 +25,12 @@ public:
         std::cout << "Vehicle #" << _id << " Destructor called" << std::endl;
     }
 
-    // Copy Constructor
-    Vehicle(const Vehicle &source)
-    {
-        _id = source._id;
-        if (source._name != nullptr)
-        {
-            _name = new std::string;
-            *_name = *source._name;
-        }
-
-        std::cout << "Vehicle #" << _id << " Copy Constructor called" << std::endl;
-    }
-
-    // Copy Assignment Operator
-    Vehicle &operator=(const Vehicle &source)
-    {
-        if (this == &source) { return *this; }
-
-        delete _name;
-        _name = new std::string;
-        *_name = *source._name;
-        _id = source._id;
-
-        std::cout << "Vehicle #" << _id << " Copy Assignment called" << std::endl;
-
-        return *this;
-    }
-
     // Move Constructor
-    Vehicle(Vehicle &&source)
+    Vehicle(Vehicle &&source) : _name(std::move(source._name))
     {
+        // move _id to this and reset id in source
         _id = source.getID();
-        _name = new std::string(source.getName());
-
         source.setID(0);
-        source.setName("Default name");
 
         std::cout << "Vehicle #" << _id << " Move Constructor called" << std::endl;
     }
@@ -70,14 +40,10 @@ public:
     {
         if (this == &source) { return *this; }
 
-        delete _name;
-        _name = new std::string;
-        *_name = *source._name;
-        _id = source._id;
-
+        _name = std::move(source._name);
+        _id = source.getID();
         source.setID(0);
-        source.setName("Default name");
-
+        
         return *this;
     }
 
@@ -108,7 +74,7 @@ int main()
     },std::move(v0));
 
     ftr.wait();
-    std::cout << v0.getName() << std::endl; // this will now cause an exception
+    //std::cout << v0.getName() << std::endl; // this will now cause an exception
 
     return 0;
 }
