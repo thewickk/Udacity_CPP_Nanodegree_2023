@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.25.0)
+project(implement_msgqueue)
+set(CMAKE_CXX_STANDARD 20)
+find_package(Threads REQUIRED)
+file(GLOB project_SRCS src/*.cpp)
+add_executable(main ${project_SRCS})
+target_link_libraries(main Threads::Threads)
